@@ -2,6 +2,7 @@
 import sys
 from datetime import datetime
 
+occurence_set = set()
 
 def join_values(*args) :
 	return ".".join([str(arg) for arg in args])
@@ -34,12 +35,17 @@ for line in sys.stdin:
 		# With this, we skip data with null bus stop
 		bus_stop = int(data[13])
 
+		occurence_set_val = join_values(line_id, variant, travel_number)
+
 		# Format : line_id.variant.travel_number.timestamp
 		# Key : compound line_id.variant(primary).travel_number.timestamp(secondary, sorting)
 		# info : travel_number.timestamp.bus_stop.timeframe
-		key = join_values(line_id, variant, travel_number, timestamp)
-		value = join_values(travel_number, timestamp, bus_stop, timeframe)
-		print("{}\t{}".format(key, value))
+		at_stop = data[14]
+		if data[14] != "0" and (occurence_set_val not in occurence_set):
+			occurence_set.add(occurence_set_val)
+			key = join_values(line_id, variant, travel_number, timestamp)
+			value = join_values(travel_number, timestamp, bus_stop, timeframe, at_stop)
+			print("{}\t{}".format(key, value))
 
 	except Exception :
 		continue
