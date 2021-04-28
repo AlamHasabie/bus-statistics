@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import sys
 from datetime import datetime
 
@@ -20,7 +20,7 @@ for line in sys.stdin:
 	# remove leading and trailing whitespace
 	data = line.strip().split(",")
 	try :
-		timestamp = int(data[0])/1000000
+		timestamp = int(data[0])//1000000
 
 		# skip data without line_id
 		line_id = int(data[1])

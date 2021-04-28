@@ -1,8 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import sys
+from statistics import stdev
 
 current_travel_number = None
 current_start_timestamp = None
+
+statistics = dict()
+
 for line in sys.stdin:
 
 	key, value = line.strip().split("\t")
@@ -17,4 +21,16 @@ for line in sys.stdin:
 		current_start_timestamp = timestamp
 	else :
 		time_difference = timestamp - current_start_timestamp
-		print("{}.{}.{}.{}\t{}").format(line_id, variant, timeframe, bus_stop, time_difference)
+		key = "{}.{}.{}.{}".format(line_id, variant, timeframe, bus_stop)
+		if key not in statistics.keys() :
+			statistics[key] = []
+
+		statistics[key].append(time_difference)
+
+
+for key, value in statistics.items() :
+	if len(value) == 1 :
+		data = value.append(value[0])
+
+	print("{}\t{}.{}.{}.{}".format(key, min(value), max(value), sum(value) / len(value), stdev(value)))
+		
