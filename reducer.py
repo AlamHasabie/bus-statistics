@@ -32,5 +32,11 @@ for key, value in statistics.items() :
 	if len(value) == 1 :
 		data = value.append(value[0])
 
-	print("{}\t{}.{}.{}.{}".format(key, min(value), max(value), sum(value) / len(value), stdev(value)))
+	line_id, variant, timeframe, stop = key.split(".")
+	print("<{},{},{},{}> min:{} max:{} average:{:.2f} std:{:.2f}".format(\
+		line_id, variant, timeframe, stop, \
+		min(value), \
+		max(value), \
+		sum(value) / len(value), \
+		stdev(value)))
 		
